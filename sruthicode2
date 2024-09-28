@@ -1,0 +1,180 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# VPC
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+# Internet Gateway
+
+resource "aws_internet_gateway" "gateway" {
+  vpc_id = vpc-035c0861779be09f1
+}
+
+# Public Subnet
+
+resource "aws_subnet" "public_subnet" {
+  vpc_id            = vpc-035c0861779be09f1
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+
+  map_public_ip_on_launch = true
+}
+
+# Route Table (Public)
+
+resource "aws_route_table" "public_route_table" {
+  vpc_id = vpc-035c0861779be09f1
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = igw-05c252c50c91a0668
+  }
+}
+
+# Route Table Association (Public Subnet)
+
+resource "aws_route_table_association" "public_route_association" {
+  subnet_id         = subnet-0a96a4e5fc26d70ff
+  route_table_id     = rtb-0732e027d27c32717
+}
+# Security Group (Allow SSH from anywhere)
+
+resource "aws_security_group" "web_server_sg" {
+  name = "web_server_sg"
+  vpc_id = vpc-035c0861779be09f1
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# EC2 Instance
+
+resource "aws_instance" "web_server" {
+  ami           = "ami-0ebfd941bbafe70c6"  # Replace with your desired AMI
+  instance_type = "t2.micro"
+  vpc_security_group_ids = sg-00acd1db39e1f1e94
+  subnet_id             = subnet-0a96a4e5fc26d70ff
+
+  tags = {
+    Name = "Web Server"
+  }
+}
+
+# API Gateway
+
+resource "aws_api_gateway_rest_api" "api" {
+  name = "my_api"
+}
+on (Public Subnet)
+
+resource "aws_route_table_association" "public_route_association" {
+  subnet_id         = subnet-0a96a4e5fc26d70ff
+  route_table_id     = rtb-0732e027d27c32717
+}
+# Security Group (Allow SSH from anywhere)
+
+resource "aws_security_group" "web_server_sg" {
+  name = "web_server_sg"
+  vpc_id = vpc-035c0861779be09f1
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# EC2 Instance
+
+resource "aws_instance" "web_server" {
+  ami           = "ami-0ebfd941bbafe70c6"  # Replace with your desired AMI
+  instance_type = "t2.micro"
+  vpc_security_group_ids = sg-00acd1db39e1f1e94
+  subnet_id             = subnet-0a96a4e5fc26d70ff
+
+  tags = {
+    Name = "Web Server"
+  }
+}
+
+# API Gateway
+
+resource "aws_api_gateway_rest_api" "api" {
+  name = "my_api"
+}
+
+on (Public Subnet)
+
+resource "aws_route_table_association" "public_route_association" {
+  subnet_id         = subnet-0a96a4e5fc26d70ff
+  route_table_id     = rtb-0732e027d27c32717
+}
+# Security Group (Allow SSH from anywhere)
+
+resource "aws_security_group" "web_server_sg" {
+  name = "web_server_sg"
+  vpc_id = vpc-035c0861779be09f1
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# EC2 Instance
+
+resource "aws_instance" "web_server" {
+  ami           = "ami-0ebfd941bbafe70c6"  # Replace with your desired AMI
+  instance_type = "t2.micro"
+  vpc_security_group_ids = sg-00acd1db39e1f1e94
+  subnet_id             = subnet-0a96a4e5fc26d70ff
+
+  tags = {
+    Name = "Web Server"
+  }
+}
+
+# API Gateway
+
+resource "aws_api_gateway_rest_api" "api" {
+  name = "my_api"
+}
+
+                                                                                                                                                                                                                                                                                                               1,1           Top
